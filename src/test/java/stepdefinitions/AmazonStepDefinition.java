@@ -9,7 +9,7 @@ import pages.AmazonPage;
 import utilities.ConfigReader;
 import utilities.Driver;
 
-public class AmazonStepdefinition {
+public class AmazonStepDefinition {
 
     AmazonPage amazonPage= new AmazonPage();
 
@@ -99,5 +99,34 @@ public class AmazonStepdefinition {
         String actualUrl= Driver.getDriver().getCurrentUrl();
 
         Assert.assertTrue(actualUrl.contains(arananKelime));
+    }
+
+    @And("acilan tum sayfalari kapatir")
+    public void acilanTumSayfalariKapatir() {
+        Driver.quitDriver();
+    }
+
+    @Given("kullanıcı amazon anasayfaya gider")
+    public void kullanıcıAmazonAnasayfayaGider() {
+        Driver.getDriver().get("amazonUrl");
+    }
+
+    @Then("amazon arama kutusuna Nutella yazıp aratır")
+    public void amazonAramaKutusunaNutellaYazıpAratır() {
+        amazonPage= new AmazonPage();
+        amazonPage.amazonAramaKutusu.sendKeys("Nutella" + Keys.ENTER);
+    }
+
+    @And("arama sonuclarının Nutella içerdigini test eder")
+    public void aramaSonuclarınınNutellaIçerdiginiTestEder() {
+        String actualAramaSonucu= amazonPage.aramaSonucuElementi.getText();
+        String expectedKelime="Nutella";
+
+        Assert.assertTrue(actualAramaSonucu.contains(expectedKelime));
+    }
+
+    @Then("sayfayı kapatır")
+    public void sayfayıKapatır() {
+        Driver.closeDriver();
     }
 }
